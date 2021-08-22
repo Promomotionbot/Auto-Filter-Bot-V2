@@ -16,6 +16,28 @@ myclient = pymongo.MongoClient(DATABASE_URI)
 mydb = myclient[DATABASE_NAME]
 
 
+def insert(chat_id):
+            user_id = int(chat_id)
+            user_det = {"_id":user_id,"lg_code":None}
+            try:
+            	dbcol.insert_one(user_det)
+            except:
+            	pass
+
+def set(chat_id,lg_code):
+	 dbcol.update_one({"_id":chat_id},{"$set":{"lg_code":lg_code}})
+
+	 	
+def unset(chat_id):
+	dbcol.update_one({"_id":chat_id},{"$set":{"lg_code":None}})
+
+def find(chat_id):
+	id =  {"_id":chat_id}
+	x = dbcol.find(id)
+	for i in x:
+             lgcd = i["lg_code"]
+             return lgcd 
+
 
 async def savefiles(docs, group_id):
     mycol = mydb[str(group_id)]
